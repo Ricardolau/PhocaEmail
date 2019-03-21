@@ -45,8 +45,12 @@ echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
 
 echo $r->startFilterBar(2);
 echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+
+echo "<br /><br />";
+echo $r->selectFilterActived('COM_PHOCAEMAIL_SELECT_ACTIVE_STATUS', $this->state->get('filter.active'));
 //echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
-//echo $r->selectFilterCategory(PhocaDownloadCategory::options($this->t['o']), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
+require_once JPATH_COMPONENT.'/helpers/phocaemaillists.php';
+echo $r->selectFilterMailingList(PhocaEmailListsHelper::options(), 'COM_PHOCAEMAIL_SELECT_MAILING_LIST', $this->state->get('filter.mailing_list'));
 echo $r->endFilterBar();
 
 echo $r->endFilterBar();		
@@ -59,11 +63,14 @@ echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 echo $r->thCheck('JGLOBAL_CHECK_ALL');
 echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_NAME', 'a.name', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_EMAIL', 'a.email', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-date">'.JHTML::_('grid.sort',  	$this->t['l'].'_SIGN_UP_DATE', 'a.date', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-date">'.JHTML::_('grid.sort',  	$this->t['l'].'_UNSUBSCRIBE_DATE', 'a.date_unsubscribe', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-date">'.JHTML::_('grid.sort',  	$this->t['l'].'_SIGN_UP_DATE', 'a.date_register', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-date">'.JHTML::_('grid.sort',  	$this->t['l'].'_ACTIVATION_DATE', 'a.date_active', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-date">'.JHTML::_('grid.sort',  	$this->t['l'].'_UNSUBSCRIPTION_DATE', 'a.date_unsubscribe', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-active">'.JHTML::_('grid.sort',  	$this->t['l'].'_ACTIVE_USER', 'a.active', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-registered">'.JText::_($this->t['l'].'_REGISTERED_USER' ).'</th>'."\n";
+echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_MAILING_LIST', 'ml.title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-hits">'.JHTML::_('grid.sort',  $this->t['l'].'_ATTEMPTS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-privacy">'.JHTML::_('grid.sort',  $this->t['l'].'_PRIVACY_CONFIRMATION', 'a.privacy', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-published">'.JHTML::_('grid.sort',  $this->t['l'].'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";	
 echo '<th class="ph-id">'.JHTML::_('grid.sort',  		$this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
@@ -91,18 +98,23 @@ $canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
 $linkEdit 		= JRoute::_( $urlEdit. $item->id );
 
 
-
 $iD = $i % 2;
 echo "\n\n";
 //echo '<tr class="row'.$iD.'" sortable-group-id="0" item-id="'.$item->id.'" parents="0" level="0">'. "\n";
 echo '<tr class="row'.$iD.'" sortable-group-id="0" >'. "\n";
-echo $r->tdOrder($canChange, $saveOrder, $orderkey);
+echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
 echo $r->td(JHtml::_('grid.id', $i, $item->id), "small ");
 					
 $checkO = '';
 if ($item->checked_out) {
 	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
 }
+
+// No name
+if ($item->name == '') {
+	$item->name = JText::_('COM_PHOCAEMAIL_NAME_NOT_SET');
+}
+
 if ($canCreate || $canEdit) {
 	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->name).'</a>';
 } else {
@@ -113,7 +125,8 @@ echo $r->td($checkO, "small ");
 
 echo $r->td( $this->escape($item->email), "small ");
 
-echo $r->td( $this->escape($item->date), "small ");
+echo $r->td( $this->escape($item->date_register), "small ");
+echo $r->td( $this->escape($item->date_active), "small ");
 
 echo $r->td( $this->escape($item->date_unsubscribe), "small ");
 
@@ -138,7 +151,15 @@ if (isset($item->userid) && $item->userid > 0) {
 }
 echo $r->td($userO, "small ");
 
+
+$mailingListTitle = isset($item->mailing_list_title) && $item->mailing_list_title != '' ? $item->mailing_list_title : '';
+echo $r->td( $this->escape($mailingListTitle), "small ");
+
 echo $r->td( $this->escape($item->hits), "small ");
+
+
+$privacy = $item->privacy == 1 ? JText::_('COM_PHOCAEMAIL_YES') : JText::_('COM_PHOCAEMAIL_NO');
+echo $r->td( $this->escape($privacy), "small ");
 
 echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $this->t['tasks'].'.', $canChange), "small ");
 
@@ -151,7 +172,7 @@ echo '</tr>'. "\n";
 }
 echo '</tbody>'. "\n";
 
-echo $r->tblFoot($this->pagination->getListFooter(), 11);
+echo $r->tblFoot($this->pagination->getListFooter(), 14);
 echo $r->endTable();
 
 echo $r->formInputs($listOrder, $listDirn, $originalOrders);

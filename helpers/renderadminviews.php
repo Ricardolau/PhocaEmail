@@ -63,6 +63,37 @@ class PhocaEmailRenderAdminViews
 		.'</select></div>'. "\n";
 	}
 	
+	public function selectFilterActived($txtSp, $state) {
+		
+		
+		switch($state) {
+			case '0':
+				$aS = '';
+				$nS = 'selected';
+				$n = '';
+				
+			break;
+			case '1':
+				$aS = 'selected';
+				$nS = '';
+				$n = '';
+			break;
+			default:
+				$aS = '';
+				$nS = '';
+				$n = 'selected';
+			break;
+		}
+		
+		return '<div class="btn-group pull-right ph-select-status">'. "\n"
+		.'<select name="filter_actived" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="" '.$n.'>- '.JText::_($txtSp).' -</option>'
+		. '<option value="0" '.$nS.'>'.JText::_('COM_PHOCAEMAIL_NOT_ACTIVE').'</option>'
+		. '<option value="1" '.$aS.'>'.JText::_('COM_PHOCAEMAIL_ACTIVE').'</option>'
+		//. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array()), 'value', 'text', $state, true)
+		.'</select></div>'. "\n";
+	}
+	
 	public function selectFilterType($txtSp, $type, $typeList) {
 		return '<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
@@ -84,6 +115,16 @@ class PhocaEmailRenderAdminViews
 		.'<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
 		. JHtml::_('select.options', $categoryList, 'value', 'text', $state)
+		. '</select></div>'. "\n";
+	}
+	
+	public function selectFilterMailingList($mailingList, $txtLng, $state) {
+		
+	
+		return '<div class="btn-group pull-right ">'. "\n"
+		.'<select name="filter_mailing_list" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="">- '.JText::_($txtLng).' -</option>'
+		. JHtml::_('select.options', $mailingList, 'value', 'text', $state)
 		. '</select></div>'. "\n";
 	}
 	
@@ -203,7 +244,7 @@ class PhocaEmailRenderAdminViews
 		.'</th>'. "\n";
 	}
 	
-	public function tdOrder($canChange, $saveOrder, $orderkey){
+	public function tdOrder($canChange, $saveOrder, $orderkey, $ordering = 0){
 	
 		$o = '<td class="order nowrap center hidden-phone">'. "\n";
 		if ($canChange) {
@@ -217,7 +258,7 @@ class PhocaEmailRenderAdminViews
 		} else {
 			$o .= '<span class="sortable-handler inactive"><i class="icon-menu"></i></span>'."\n";
 		}
-		$orderkeyPlus = $orderkey + 1;
+		$orderkeyPlus = $ordering;//$orderkey + 1;
 		$o .= '<input type="text" style="display:none" name="order[]" size="5" value="'.$orderkeyPlus.'" />'. "\n"
 		.'</td>'. "\n"; 
 		return $o;

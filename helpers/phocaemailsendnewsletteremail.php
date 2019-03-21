@@ -69,10 +69,10 @@ class PhocaEmailSendNewsletterEmail
 		
 		$i['sitename']	= $params->get('site_name', '');
 		if ($i['sitename'] == '') {
-			$i['sitename'] = $app->getCfg('sitename');
+			$i['sitename'] = $app->get('sitename');
 		}
 		if ($i['sitename'] == '') {
-			$i['sitename'] = $app->getCfg('fromname');
+			$i['sitename'] = $app->get('fromname');
 		}
 		
 		$i['subscriptionname']		= $params->get('subscription_name', '');
@@ -82,7 +82,7 @@ class PhocaEmailSendNewsletterEmail
 		
 		$i['from'] = $params->get('email_from', '');
 		if ($i['from'] == '') {
-			$i['from'] = $app->getCfg('mailfrom');
+			$i['from'] = $app->get('mailfrom');
 		}
 		
 		$i['fromname'] = $params->get('from_name', '');
@@ -92,7 +92,7 @@ class PhocaEmailSendNewsletterEmail
 		}
 		
 		if ($i['fromname'] == '') {
-			$i['fromname'] = $app->getCfg('mailfrom');
+			$i['fromname'] = $app->get('mailfrom');
 		}
 		
 		return $i;
@@ -145,7 +145,7 @@ class PhocaEmailSendNewsletterEmail
 		$link = PhocaEmailHelperRoute::getNewsletterRoute(0, $type, $token);
 		//return JURI::base(true) . JRoute::_($link);
 		
-		$formatLink = self::getRightPathLink($link);
+		$formatLink = PhocaEmailUtils::getRightPathLink($link);
 		return $formatLink;
 	}
 	
@@ -153,6 +153,7 @@ class PhocaEmailSendNewsletterEmail
 		
 		// Test if this link is absolute http:// then do not change it
 		$pos1 			= strpos($link, 'http://');
+<<<<<<< HEAD
 		if ($pos1 === false) {
 		} else {
 			return $link;
@@ -207,7 +208,9 @@ class PhocaEmailSendNewsletterEmail
 			return 2; // Already active
 		}
 		
-		$query = 'UPDATE #__phocaemail_subscribers AS a SET a.active = 1'
+		$date 			= gmdate('Y-m-d H:i:s');
+		
+		$query = 'UPDATE #__phocaemail_subscribers AS a SET a.active = 1, a.date_active = '.$db->quote($date)
 				. ' WHERE a.token = '.$db->quote(htmlspecialchars($uToken))
 				. ' LIMIT 1';
 		$db->setQuery( (string)$query );
@@ -221,6 +224,9 @@ class PhocaEmailSendNewsletterEmail
 	}
 	
 	public static function unsubscribeUser($uToken) {
+		
+		$params 							= JComponentHelper::getParams('com_phocaemail') ;
+		$unsubscribing_automatic_deletion	= $params->get('unsubscribing_automatic_deletion', 0);
 	
 		$db	= JFactory::getDBO();
 		// Check if it is active yet
@@ -236,6 +242,16 @@ class PhocaEmailSendNewsletterEmail
 			//2 ... unsubscribed
 			return 3; // Not active, cannot be unsubscribed
 		}
+		
+		if ($unsubscribing_automatic_deletion == 1) {
+			$query = 'DELETE FROM #__phocaemail_subscribers'
+				. ' WHERE token = '.$db->quote(htmlspecialchars($uToken))
+				. ' LIMIT 1';
+			$db->setQuery( (string)$query );
+			$db->execute();
+			return 4;
+		}
+		
 		
 		$date = gmdate('Y-m-d H:i:s');
 		$query = 'UPDATE #__phocaemail_subscribers AS a SET a.active = 2, a.date_unsubscribe = '.$db->quote($date)
