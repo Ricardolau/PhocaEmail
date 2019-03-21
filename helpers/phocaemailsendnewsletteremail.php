@@ -153,7 +153,6 @@ class PhocaEmailSendNewsletterEmail
 		
 		// Test if this link is absolute http:// then do not change it
 		$pos1 			= strpos($link, 'http://');
-<<<<<<< HEAD
 		if ($pos1 === false) {
 		} else {
 			return $link;
