@@ -138,7 +138,6 @@
 	
 	<field name="description" default="" type="editor" label="COM_PHOCAEMAIL_MAIN_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_MAIN_DESCRIPTION_DESC" filter="JComponentHelper::filterText" />
 	
-	<field name="description" default="" type="editor" label="COM_PHOCAEMAIL_MAIN_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_MAIN_DESCRIPTION_DESC" filter="safehtml" />
 	
 	
 	</fieldset>

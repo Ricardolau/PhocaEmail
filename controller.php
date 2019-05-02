@@ -29,11 +29,6 @@ if ($layout == 'edit') {
 } else {
 
 	foreach ($l as $k => $v) {
-		// Aquí controla las vistas que va mostrar y en la que está
-		//~ echo 'vista:'.$view;
-		//~ echo '<pre>';
-		//~ print_r($v);
-		//~ echo '</pre>';
 		if ($v[1] == '') {
 			$link = 'index.php?option=com_phocaemail';
 		} else {
@@ -41,7 +36,6 @@ if ($layout == 'edit') {
 		}
 
 		if ($view == $v[1]) {
-			// Clase para renderizar slider ( barra lateral);
 			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1], true );
 		} else {
 			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1]);
