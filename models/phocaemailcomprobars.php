@@ -145,8 +145,8 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.userid');
 		
 		// Añadimos id de virtuemart
-		//~ $query->select('v.virtuemart_userinfo_id AS idVirtuemart,v.name AS namevirtuemart');
-		//~ $query->join('LEFT', '#__virtuemart_userinfos AS v ON v.virtuemart_user_id = a.userid');
+		$query->select('v.virtuemart_userinfo_id AS idVirtuemart,v.name AS namevirtuemart');
+		$query->join('LEFT', '#__virtuemart_userinfos AS v ON v.virtuemart_user_id = a.userid');
 
 
 
@@ -207,9 +207,8 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		$respuesta = array();
 		$query	= $this->getListQuery();
 		//$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
-    
+
 		$items	= $this->_getList($query);
-        $items= array();
 		// Contamos los registros que no tiene usuario asignado.
 		$i = 0;
 		$x = 0;
