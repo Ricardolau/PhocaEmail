@@ -144,10 +144,7 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno, ua.email AS emailusuario');
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.userid');
 		
-		// Añadimos id de virtuemart
-		$query->select('v.virtuemart_userinfo_id AS idVirtuemart,v.name AS namevirtuemart');
-		$query->join('LEFT', '#__virtuemart_userinfos AS v ON v.virtuemart_user_id = a.userid');
-
+		
 
 
 		// Filter by access level.
