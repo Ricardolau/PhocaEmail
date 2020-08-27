@@ -1,4 +1,4 @@
-<?php defined('_JEXEC') or die('Restricted access'); 
+<?php defined('_JEXEC') or die('Restricted access');
 /* @package Joomla
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -7,67 +7,42 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 ?>
-<?php JHTML::_('behavior.tooltip');
-
+<?php //JHTML::_('behavior.tooltip');
+$params 			= JComponentHelper::getParams('com_phocaemail') ;
+$tiempo_espera = $params->get('tiempo_espera') *1000;
 $this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. JSession::getFormToken().'=1';
 
-?><script language="javascript" type="text/javascript">
 
-Joomla.submitbutton = function(task) {
+JFactory::getDocument()->addScriptDeclaration(
+
+"Joomla.submitbutton = function(task) {
 	var form = document.adminForm;
 	if (task == 'phocaemailsendnewsletter.send') {
-		if (form.newsletter.value == ""){
-			alert( "<?php echo JText::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true) ?>" );
+		if (form.newsletter.value == ''){
+			alert( '". JText::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true)."' );
 		} else {
-			
-			var url 						= '<?php echo $this->t['url']; ?>';	
+
+			var url 						= '". $this->t['url']."';
 			var dataPost 					= {};
 			var nId							= form.newsletter.value;
 			dataPost['newsletterid']		= nId;
-			
+
 			var subscribers	= [];
-			<?php echo '		' . $this->t['subscribersjs']; ?>
+			".'		' . $this->t['subscribersjs']."
 			if (typeof subscribers[nId] !== 'undefined') {
 				var slength = subscribers[nId].length;
 			} else {
 				var slength = 0;
 			}
-			
-			var txtSending = "";
-			var txtSendingFinished = "";
+
+			var txtSending = '';
+			var txtSendingFinished = '';
 			if (slength == 0) {
-				alert( "<?php echo JText::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true) ?>" );
+				alert( '". JText::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true)."' );
 			} else {
-				jQuery("#phsendoutput").empty();
-				for (var i = 0; i < slength; i++) {
-					
-					var j = i + 1;
-					txtSending = '<div class="ph-sending-msg"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true) ?> (' + j + '/' + slength + ') ...</div>';
-					jQuery("#phsendoutput").append(txtSending);
-					
-					dataPost['subscriberid']	= subscribers[nId][i];
-					jQuery.ajax({
-					   url: url,
-					   type:'POST',
-					   data:dataPost,
-					   dataType:'JSON',
-					   async: false,
-					   success:function(data){
-							if ( data.status == 1 ){
-								jQuery("#phsendoutput").append(data.message);
-								//txtSending += data.message;
-							} else {
-								jQuery("#phsendoutput").append(data.error); 
-								//txtSending += data.error;
-							}
-						}
-					});
-					//jQuery("#phsendoutput").append(txtSending);
-				}
-				
-				txtSendingFinished = '<div class="ph-sending-msg-finish"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true) ?></div>';
-				jQuery("#phsendoutput").append(txtSendingFinished);
-				
+				jQuery(\"#phsendoutput\").empty();
+				controladorEnvio(subscribers,slength);
+
 			}
 		
 		}
@@ -75,8 +50,51 @@ Joomla.submitbutton = function(task) {
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 }
-</script>
+    function envioEmail(){
+        // Ejecutamos envio si contador es mejor al numero items.. 
+            var i = contador;
+            // Retraso la ejecucion durante 20 s
+                        var j = i + 1;
+                        txtSending = '<div class=\"ph-sending-msg\">". JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true)." (' + j + '/' + slength + ') ...</div>';
+                        jQuery(\"#phsendoutput\").append(txtSending);
 
+                        dataPost['subscriberid']	= subscribers[nId][i];
+                        jQuery.ajax({
+                           url: url,
+                           type:'POST',
+                           data:dataPost,
+                           dataType:'JSON',
+                           async: false,
+                           success:function(data){
+                                if ( data.status == 1 ){
+                                    jQuery(\"#phsendoutput\").append(data.message);
+                                    //txtSending += data.message;
+                                } else {
+                                    jQuery(\"#phsendoutput\").append(data.error);
+                                    //txtSending += data.error;
+                                }
+                contador ++;
+                            }
+                        });
+                        //jQuery(\"#phsendoutput\").append(txtSending);
+
+    }
+
+    function controladorEnvio(){
+        if (contador < slength){
+            subcriptor = subscribers[nId][contador];
+            console.log(contador);
+            console.log(typeof(subcriptor));
+            envioEmail();
+        } else {
+            // Entonces termino
+				txtSendingFinished = '<div class=\"ph-sending-msg-finish\">". JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true)."</div>';
+				jQuery(\"#phsendoutput\").append(txtSendingFinished);
+        }
+    }
+");
+
+ ?>
 <form action="index.php?option=com_phocaemail&view=phocaemailsendnewsletter" method="post" name="adminForm" id="adminForm">
 <?php echo '<div class="span10 form-horizontal">';
 
@@ -107,7 +125,7 @@ echo '<div class="controls">';
 echo '<div class="ph-send-output" id="phsendoutput"></div>';
 echo '</div>';
 echo '</div>';
-	
+
 
 echo '</div>';//end span10
 // Second Column
@@ -121,5 +139,3 @@ echo '</div>';//end span2 ?>
 <input type="hidden" name="task" value="" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-
-

@@ -17,6 +17,7 @@ $l['sn']		= array('COM_PHOCAEMAIL_SEND_NEWSLETTER', 'phocaemailsendnewsletter');
 $l['n']		= array('COM_PHOCAEMAIL_NEWSLETTERS', 'phocaemailnewsletters');
 $l['s']		= array('COM_PHOCAEMAIL_SUBSCRIBERS', 'phocaemailsubscribers');
 $l['l']		= array('COM_PHOCAEMAIL_MAILING_LISTS', 'phocaemaillists');
+$l['com']	= array('COM_PHOCAEMAIL_COMPROBAR', 'phocaemailcomprobars'); // Creo opción comprobar
 $l['in']	= array('COM_PHOCAEMAIL_INFO', 'phocaemailinfo');
 
 $view	= JFactory::getApplication()->input->get('view');
