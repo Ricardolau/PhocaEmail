@@ -79,7 +79,7 @@
 	<option value="0">COM_PHOCAEMAIL_NO</option>
 </field>
 
-<field name="privacy_checkbox_text" default="" buttons="0" width="330" type="editor" filter="JComponentHelper::filterText" label="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_LABEL"/>
+<field name="privacy_checkbox_text" default="" buttons="0" width="330" type="editor" filter="JComponentHelper::filterText" label="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_DESC"/>
 	
 
 <field 	name="enable_captcha" type="radio" class="btn-group" default="0" label="COM_PHOCAEMAIL_FIELD_ENABLE_CAPTCHA_LABEL" description="COM_PHOCAEMAIL_FIELD_ENABLE_CAPTCHA_DESC">
@@ -94,6 +94,11 @@
 <field name="recaptcha_request_method" type="list" class="btn-group btn-group-yesno" default="2" label="COM_PHOCAEMAIL_FIELD_RECAPTCHA_REQUEST_METHOD_LABEL" description="COM_PHOCAEMAIL_FIELD_RECAPTCHA_REQUEST_METHOD_DESC">
 	<option value="1">file_get_contents</option>
 	<option value="2">cUrl</option>
+</field>
+
+<field name="recaptcha_size" type="list" class="btn-group btn-group-yesno" default="2" label="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SIZE_LABEL" description="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SIZE_LABEL">
+	<option value="1">COM_PHOCAEMAIL_NORMAL</option>
+	<option value="2">COM_PHOCAEMAIL_COMPACT</option>
 </field>	
 
 <field name="session_suffix" default="" type="text" label="COM_PHOCAEMAIL_FIELD_SESSION_SUFFIX_LABEL" description="COM_PHOCAEMAIL_FIELD_SESSION_SUFFIX_DESC" />
@@ -144,7 +149,7 @@
 	
 	<fieldset name="permissions_label" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
 
-		<field name="rules" type="rules" component="com_phocaemail" filter="rules" label="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component" description="COM_PHOCAEMAIL_FIELD_DESC"/>
+		<field name="rules" type="rules" component="com_phocaemail" filter="rules" label="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component" description="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_DESC"/>
 	</fieldset>
 	
 	</fields>
