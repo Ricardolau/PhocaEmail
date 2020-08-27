@@ -13,7 +13,7 @@ jimport('joomla.application.component.controller');
 
 $l['cp']	= array('COM_PHOCAEMAIL_CONTROL_PANEL', '');
 $l['w']		= array('COM_PHOCAEMAIL_SEND_EMAIL', 'phocaemailwrite');
-$l['sn']	= array('COM_PHOCAEMAIL_SEND_NEWSLETTER', 'phocaemailsendnewsletter');
+$l['sn']		= array('COM_PHOCAEMAIL_SEND_NEWSLETTER', 'phocaemailsendnewsletter');
 $l['n']		= array('COM_PHOCAEMAIL_NEWSLETTERS', 'phocaemailnewsletters');
 $l['s']		= array('COM_PHOCAEMAIL_SUBSCRIBERS', 'phocaemailsubscribers');
 $l['l']		= array('COM_PHOCAEMAIL_MAILING_LISTS', 'phocaemaillists');
@@ -29,6 +29,7 @@ if ($layout == 'edit') {
 } else {
 
 	foreach ($l as $k => $v) {
+		
 		if ($v[1] == '') {
 			$link = 'index.php?option=com_phocaemail';
 		} else {

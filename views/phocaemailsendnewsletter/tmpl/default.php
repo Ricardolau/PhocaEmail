@@ -13,7 +13,6 @@ $tiempo_espera = $params->get('tiempo_espera') *1000;
 $this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. JSession::getFormToken().'=1';
 
 
-
 JFactory::getDocument()->addScriptDeclaration(
 
 "Joomla.submitbutton = function(task) {
@@ -22,7 +21,6 @@ JFactory::getDocument()->addScriptDeclaration(
 		if (form.newsletter.value == ''){
 			alert( '". JText::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true)."' );
 		} else {
-
 
 			var url 						= '". $this->t['url']."';
 			var dataPost 					= {};
@@ -42,7 +40,6 @@ JFactory::getDocument()->addScriptDeclaration(
 			if (slength == 0) {
 				alert( '". JText::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true)."' );
 			} else {
-
 				jQuery(\"#phsendoutput\").empty();
 				controladorEnvio(subscribers,slength);
 
@@ -53,7 +50,6 @@ JFactory::getDocument()->addScriptDeclaration(
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 }
-
     function envioEmail(){
         // Ejecutamos envio si contador es mejor al numero items.. 
             var i = contador;
@@ -101,7 +97,6 @@ JFactory::getDocument()->addScriptDeclaration(
  ?>
 <form action="index.php?option=com_phocaemail&view=phocaemailsendnewsletter" method="post" name="adminForm" id="adminForm">
 <?php echo '<div class="span10 form-horizontal">';
-
 
 echo '<div class="control-group">';
 echo '<div class="control-label">'.JText::_('COM_PHOCAEMAIL_NEWSLETTER').'</div>';

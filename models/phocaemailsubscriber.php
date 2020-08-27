@@ -126,7 +126,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 
 			// Trigger the onContentBeforeSave event.
 			$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
-			
+
 			if (in_array(false, $result, true))
 			{
 				$this->setError($table->getError());
