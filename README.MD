@@ -7,7 +7,7 @@
    
 *Tengo tambien un plugin de registro, en el que añade la opcion de a la hora registrase aceptar newsletter y ya quedaria reflejado en phocaemail.*
 
-
+# AHORA README DE PHOCA:
 
 ![Phoca Email](https://github.com/PhocaCz/PhocaEmail/blob/master/phocaemail.png)
 
