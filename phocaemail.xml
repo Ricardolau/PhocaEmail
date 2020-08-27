@@ -87,7 +87,7 @@
 			<filename>phocaemail.php</filename>
 		</files>
 
-		<languages>
+		<languages folder="admin/language">
 			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.sys.ini</language>
 			<language tag="es-ES">language/es-ES/es-ES.com_phocaemail.ini</language>
