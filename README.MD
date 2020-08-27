@@ -1,4 +1,9 @@
-
+# MI FORK A PHOCAEMAIL CON ALGUNO CAMBIOS:
+- Primero poner un parametro para poder indicar el tiempo que tiene esperar el componente para enviar email, ya que hay muchos servidores que limita la cantidad email que envia, por lo que se debe controlar el tiempo.
+- Un seccion nueva, donde podemos comprobar cosar como:
+   - Cuantos usuarios hay y cuantos de estos estan registrados en newletter.
+   - Poder añadir los usuarios automaticamente al newletter ( un poco fuera de GDPR ), si tuvieramos registrados antes de la ley , ahora deberíamos añadirlos, mandarles un mensaje para digan si quieren recibir o no news.
+*Tengo tambien un plugin de registro, en el que añade la opcion de a la hora registrase aceptar newsletter y ya quedaria reflejado en phocaemail.*
 
 
 
